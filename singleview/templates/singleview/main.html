@@ -1,0 +1,138 @@
+{% load static %}
+<html>
+<head>
+	<meta charset='UTF-8'>
+	<title>Works Single View</title>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
+	<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+	  integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+	<style>
+
+	/*
+	Max width before this PARTICULAR table gets nasty
+	This query will take effect for any screen smaller than 760px
+	and also iPads specifically.
+	*/
+	@media
+	only screen and (max-width: 760px),
+	(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+		/* Force table to not be like tables anymore */
+		table, thead, tbody, th, td, tr {
+			display: block;
+		}
+
+		/* Hide table headers (but not display: none;, for accessibility) */
+		thead tr {
+			position: absolute;
+			top: -9999px;
+			left: -9999px;
+		}
+
+		tr { border: 1px solid #ccc; }
+
+		td {
+			/* Behave  like a "row" */
+			border: none;
+			border-bottom: 1px solid #eee;
+			position: relative;
+			padding-left: 50%;
+		}
+
+		td:before {
+			/* Now like a table header */
+			position: absolute;
+			/* Top/left values mimic padding */
+			top: 6px;
+			left: 6px;
+			width: 45%;
+			padding-right: 10px;
+			white-space: nowrap;
+		}
+
+		/*
+		Label the data
+		*/
+		td:nth-of-type(1):before { content: "First Name"; }
+		td:nth-of-type(2):before { content: "Last Name"; }
+		td:nth-of-type(3):before { content: "Job Title"; }
+		td:nth-of-type(4):before { content: "Favorite Color"; }
+		td:nth-of-type(5):before { content: "Wars of Trek?"; }
+		td:nth-of-type(6):before { content: "Porn Name"; }
+		td:nth-of-type(7):before { content: "Date of Birth"; }
+		td:nth-of-type(8):before { content: "Dream Vacation City"; }
+		td:nth-of-type(9):before { content: "GPA"; }
+		td:nth-of-type(10):before { content: "Arbitrary Data"; }
+	}
+
+	/* Smartphones (portrait and landscape) ----------- */
+	@media only screen
+	and (min-device-width : 320px)
+	and (max-device-width : 480px) {
+		body {
+			padding: 0;
+			margin: 0;
+			width: 320px; }
+		}
+
+	/* iPads (portrait and landscape) ----------- */
+	@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+		body {
+			width: 495px;
+		}
+	}
+
+	</style>
+</head>
+<body>
+	<div id="page-wrap">
+	<h1>Works Single View</h1>
+	<br>
+    <form action="" method="POST" enctype="multipart/form-data" class="form-horizontal">
+    {% csrf_token %}
+    <div class="form-group">
+        <div class="col-md-8">
+            <input class="form-control" id="csv_file" name="csv_file" required="True" type="file">
+        </div>
+    </div>
+	<br>
+    <div class="form-group">
+        <div class="col-md-3 col-sm-3 col-xs-12 col-md-offset-3" style="margin-bottom:10px;">
+             <button class="btn btn-primary"><span class="glyphicon glyphicon-upload" style="margin-right:5px;"></span>Upload</button>
+        </div>
+    </div>
+    </form>
+
+		{% if messages %}
+		<ul class="messages">
+			{% for message in messages %}
+			<h6 {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</h6>
+			{% endfor %}
+		</ul>
+		{% endif %}
+
+	<p>INSTRUCCIONES: Seleccione el archivo .csv con la informacion relevante. Presione upload, el archivo sera
+		procesado y la informacion aparecera en pantalla.</p>
+	<table>
+		<thead>
+		<tr>
+			<th>Title</th>
+			<th>Contributors</th>
+			<th>ISWC</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for take in takes  %}
+		<tr>
+			<td>{{take.title}}</td>
+			<td>{{take.contributors}}</td>
+			<td>{{take.iswc}}</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+	</div>
+</body>
+</html>
